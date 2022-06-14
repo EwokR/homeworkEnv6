@@ -1,8 +1,7 @@
-package com.example.homeworkenv4.controller;
+package com.example.homeworkenv6.controller;
 
-import com.example.homeworkenv4.Employee;
-import com.example.homeworkenv4.Service.EmployeeService;
-import org.springframework.http.MediaType;
+import com.example.homeworkenv6.Employee;
+import com.example.homeworkenv6.Service.EmployeeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -1,78 +1,59 @@
-package com.example.homeworkenv4.Service;
+package com.example.homeworkenv6.Service;
 
-import com.example.homeworkenv4.Employee;
-import com.example.homeworkenv4.exceptions.EmployeeAlreadyAddedException;
-import com.example.homeworkenv4.exceptions.EmployeeNotFoundException;
-import com.example.homeworkenv4.exceptions.EmployeeStorageIsFullException;
+import com.example.homeworkenv6.Employee;
+import com.example.homeworkenv6.exceptions.EmployeeAlreadyAddedException;
+import com.example.homeworkenv6.exceptions.EmployeeNotFoundException;
+import com.example.homeworkenv6.exceptions.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    List<Employee> employees = List.of(
-            new Employee("Sas", "Sus"),
-            new Employee("Ivan", "Ivanov"),
-            new Employee("Petr", "Petrov"),
-            new Employee("Andrei", "Sidorov"),
-            new Employee("Mihail", "Hrustalyov"),
-            new Employee("Denis", "Krylov"),
-            new Employee("Stepan", "Nedotepkin"),
-            new Employee("Mudrets", "Vseznamus"),
-            new Employee("Chel", "Chelovekov"),
-            new Employee("Anton", "Chekhov")
-            );
+    private static final int LIMIT = 10;
+    private final Map<String, Employee> employees = new HashMap<>();
+
+    private String getKey(Employee employee) {
+        return employee.getName() + "|" + employee.getSecondName();
+    }
 
     @Override
     public Employee addEmployee(String name, String secondName) throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
-        Employee employee = new Employee(name,secondName);
-        for (int i = 0; i < employees.size(); i++) {
-            if (employees.get(i).getName().equals(null) && employees.get(i).getSecondName().equals(null)) {
-                employees.get(i).setName(name);
-                employees.get(i).setSecondName(secondName);
-                System.out.println("Employee " + name + " " + secondName + " is added.");
-            } else if (employees.get(i).getName().equals(name) && employees.get(i).getSecondName().equals(secondName)) {
-                throw new EmployeeAlreadyAddedException("Employee is already added.");
-            } else {
-                throw new EmployeeStorageIsFullException("Employee storage is full.");
-            }
+        Employee employee = new Employee(name, secondName);
+        String key = getKey(employee);
+        if (employees.containsKey(key)) {
+            throw new EmployeeAlreadyAddedException();
         }
-        return employee;
+        if (employees.size() < LIMIT) {
+            return employees.put(key, employee);
+        }
+        throw new EmployeeStorageIsFullException();
     }
 
     @Override
     public Employee deleteEmployee(String name, String secondName) throws EmployeeNotFoundException {
-        Employee employee = new Employee(name,secondName);
-        for (int i = 0; i < employees.size(); i++) {
-            if (name.equals(employees.get(i).getName()) && secondName.equals(employees.get(i).getSecondName())) {
-                employees.remove(i);
-                System.out.println("Employee " + name + " " + secondName + " is deleted.");
-            } else {
-                throw new EmployeeNotFoundException("Employee not found");
-            }
+        String key = getKey(new Employee(name, secondName));
+        if (!employees.containsKey(key)) {
+            throw new EmployeeNotFoundException();
         }
-        return employee;
+        return employees.remove(key);
     }
 
     @Override
     public Employee findEmployee(String name, String secondName) throws EmployeeNotFoundException {
-        Employee employee = new Employee(name,secondName);
-        for (int i = 0; i < employees.size(); i++) {
-            if (name.equals(employees.get(i).getName()) && secondName.equals(employees.get(i).getSecondName())) {
-                System.out.println("Employee" + name + " " + secondName + " found");
-            } else {
-                throw new EmployeeNotFoundException("Employee not found");
-            }
+        Employee employee = new Employee(name, secondName);
+        if (!employees.containsKey(getKey(employee))) {
+            throw new EmployeeNotFoundException();
         }
         return employee;
     }
 
-    public List<Employee> getAll(){
-        return new ArrayList<>(employees);
+    public List<Employee> getAll() {
+        return new ArrayList<>(employees.values());
     }
-
 }
 
