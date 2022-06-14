@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class DivisionServiceimpl {
+public class DivisionServiceimpl implements DivisionService {
 
     private final EmployeeServiceImpl employeeService;
 
@@ -18,7 +18,7 @@ public class DivisionServiceimpl {
         this.employeeService = employeeService;
     }
 
-
+    @Override
     public Employee findMinimumSalaryInDivision(int division) {
         return employeeService.getAll().stream()
                 .filter(e -> e.getDivision() == division)
@@ -26,7 +26,7 @@ public class DivisionServiceimpl {
                 .orElseThrow(()-> new EmployeeNotFoundException());
     }
 
-
+    @Override
     public Employee findMaximumSalaryInDivision(int division) {
         return employeeService.getAll().stream()
                 .filter(e -> e.getDivision() == division)
@@ -34,13 +34,14 @@ public class DivisionServiceimpl {
                 .orElseThrow(()-> new EmployeeNotFoundException());
     }
 
-
+    @Override
     public List<Employee> printNamesInDivision(int division) {
         return employeeService.getAll().stream()
                 .filter(e -> e.getDivision() == division)
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Map<Integer, List<Employee>> allEmployee() {
         return employeeService.getAll().stream()
                 .collect(Collectors.groupingBy(e -> e.getDivision(),Collectors.toList()));
