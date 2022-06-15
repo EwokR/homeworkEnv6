@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 public class SecondController {
 
@@ -26,12 +29,12 @@ public class SecondController {
     }
 
     @GetMapping(value = "/all")
-    public Employee printAllNamesInDivision(@RequestParam int division) {
+    public List<Employee> printAllNamesInDivision(@RequestParam int division) {
         return divisionService.printNamesInDivision(division);
     }
 
     @GetMapping(value = "/all")
-    public Employee all() {
+    public Map<Integer, List<Employee>> all() {
         return divisionService.allEmployee();
     }
 }

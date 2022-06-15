@@ -42,7 +42,7 @@ public class DivisionServiceimpl implements DivisionService {
     }
 
     @Override
-    public Map<Integer, List<Employee>> allEmployee() {
+    public  Map<Integer, List<Employee>> allEmployee() {
         return employeeService.getAll().stream()
                 .collect(Collectors.groupingBy(e -> e.getDivision(),Collectors.toList()));
     }
