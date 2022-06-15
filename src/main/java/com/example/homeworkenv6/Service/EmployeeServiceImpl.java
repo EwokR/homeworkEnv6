@@ -22,8 +22,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee addEmployee(String name, String secondName) throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
-        Employee employee = new Employee(name, secondName);
+    public Employee addEmployee(String name, String secondName, double salary, int division) throws EmployeeAlreadyAddedException, EmployeeStorageIsFullException {
+        Employee employee = new Employee(name, secondName, salary,division);
         String key = getKey(employee);
         if (employees.containsKey(key)) {
             throw new EmployeeAlreadyAddedException();
@@ -35,8 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee deleteEmployee(String name, String secondName) throws EmployeeNotFoundException {
-        String key = getKey(new Employee(name, secondName));
+    public Employee deleteEmployee(String name, String secondName,double salary, int division) throws EmployeeNotFoundException {
+        String key = getKey(new Employee(name, secondName, salary, division));
         if (!employees.containsKey(key)) {
             throw new EmployeeNotFoundException();
         }
@@ -44,8 +44,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findEmployee(String name, String secondName) throws EmployeeNotFoundException {
-        Employee employee = new Employee(name, secondName);
+    public Employee findEmployee(String name, String secondName,double salary, int division) throws EmployeeNotFoundException {
+        Employee employee = new Employee(name, secondName,salary, division);
         if (!employees.containsKey(getKey(employee))) {
             throw new EmployeeNotFoundException();
         }
