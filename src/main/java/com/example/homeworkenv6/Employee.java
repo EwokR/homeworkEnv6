@@ -1,10 +1,11 @@
 package com.example.homeworkenv6;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
-public class Employee {
+public class Employee extends StringUtils {
     @JsonProperty("firstName")
     private String name;
     @JsonProperty("lastName")
